@@ -50,11 +50,11 @@ stages:
               sshEndpoint: 'ssh-service-connection'
               runOptions: 'inline'
               inline: |
-                sudo apt update -y
-                sudo apt install nginx -y
+                sudo apt-get update -y
+                sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nginx
                 sudo systemctl enable nginx
-                sudo systemctl start nginx
-              readyTimeout: '20000'
+                sudo systemctl start nginx             
+                
 
       - job: DeployCode
         displayName: 'Deploy Code'
