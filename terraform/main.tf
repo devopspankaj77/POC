@@ -12,13 +12,15 @@ import {
   to = azurerm_resource_group.rg
   id = "/subscriptions/bfa25a35-e77a-47a6-8d20-5557ab211ef7/resourceGroups/poc"
 }
+# terraform import azurerm_resource_group.rg /subscriptions/bfa25a35-e77a-47a6-8d20-5557ab211ef7/resourceGroups/poc
 
-
+# 
 resource "azurerm_virtual_network" "vnet" {
   name                = "poc-vnet"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
+  
 }
 
 resource "azurerm_subnet" "subnet" {
@@ -26,18 +28,22 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.2.0/24"]
+  
 }
 
 resource "azurerm_public_ip" "pip" {
   name                = "poc-pip"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
+ 
 }
+
 resource "azurerm_network_interface" "nic" {
   name                = "poc-nic"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
+  
 
   ip_configuration {
     name                          = "pocipconfig"
@@ -105,10 +111,13 @@ resource "azurerm_linux_virtual_machine" "vm" {
   location            = azurerm_resource_group.rg.location
   size                = "Standard_F2"
   admin_username      = "adminuser"
+  # admin_password      = "adminpassword"
+  # disable_password_authentication = false
   
   network_interface_ids = [
     azurerm_network_interface.nic.id,
   ]
+   
 
   admin_ssh_key {
     username   = "adminuser"
