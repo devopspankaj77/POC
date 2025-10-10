@@ -60,12 +60,12 @@ stages:
         displayName: 'Deploy Code'
         dependsOn: SSHConnect
         steps:
-        - task: CopyFilesOverSSH@0
+        - task: SSH@0
           inputs:
             sshEndpoint: 'ssh-service-connection'
-            sourceFolder: '$(System.DefaultWorkingDirectory)/src'
-            contents: 'index.html'
-            targetFolder: '/var/www/html'
-            cleanTargetFolder: true
+            runOptions: 'inline'
+            inline: |
+              cd /var/www/html
+              git pull origin main
             readyTimeout: '20000'
 
