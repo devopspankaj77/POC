@@ -6,7 +6,7 @@ trigger:
 pool: poc
 
 variables:
-  dir: '$(System.DefaultWorkingDirectory)/terraform'
+  dir: '$(System.DefaultWorkingDirectory)'
  
  
 
