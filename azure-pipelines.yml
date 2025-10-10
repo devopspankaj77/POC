@@ -66,4 +66,6 @@ stages:
             sourceFolder: '$(System.DefaultWorkingDirectory)/src'
             contents: 'index.html'
             targetFolder: '/var/www/html'
+            cleanTargetFolder: true
             readyTimeout: '20000'
+
