@@ -1,5 +1,5 @@
 trigger:
-  branches: 
+  branches:
     include:
       - main
 
@@ -7,25 +7,28 @@ pool: poc
 
 stages:
   - stage: TerraformStage
-    displayName: 'Terraform Stage'
+    displayName: "Terraform Deployment"
     jobs:
       - job: TerraformInit
-        displayName: 'Terraform Init'
+        displayName: "Terraform Init"
         steps:
-        - task: TerraformTask@5
-          inputs:
-            provider: 'azurerm'
-            command: 'init'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-            commandOptions: '-reconfigure'
-            backendServiceArm: 'azurerm-service-connection'
-            backendAzureRmResourceGroupName: 'rg-backend'
-            backendAzureRmStorageAccountName: 'stgbackend25'
-            backendAzureRmContainerName: 'backendcont'
-            backendAzureRmKey: 'terraform.tfstate'
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: 'latest'
+
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+              backendServiceArm: 'azurerm-service-connection'
+              backendAzureRmResourceGroupName: 'rg-backend'
+              backendAzureRmStorageAccountName: 'stgbackend25'
+              backendAzureRmContainerName: 'backendcont'
+              backendAzureRmKey: 'terraform.tfstate'
 
       - job: TerraformPlanApply
-        displayName: 'Terraform Plan & Apply'
+        displayName: "Plan & Apply"
         dependsOn: TerraformInit
         steps:
           - task: TerraformTask@5
@@ -34,12 +37,14 @@ stages:
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
               environmentServiceNameAzureRM: 'azurerm-service-connection'
+
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
               command: 'apply'
               workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
               environmentServiceNameAzureRM: 'azurerm-service-connection'
+
 
       - job: SSHConnect
         displayName: 'SSH Connect & Install Nginx'
