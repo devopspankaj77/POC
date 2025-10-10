@@ -5,6 +5,11 @@ trigger:
 
 pool: poc
 
+variables:
+  dir: '$(System.DefaultWorkingDirectory)/terraform'
+ 
+ 
+
 stages:
   - stage: TerraformStage
     displayName: "Terraform Deployment"
@@ -60,12 +65,12 @@ stages:
         displayName: 'Deploy Code'
         dependsOn: SSHConnect
         steps:
-        - task: SSH@0
+        - task: CopyFilesOverSSH@0
           inputs:
             sshEndpoint: 'ssh-service-connection'
-            runOptions: 'inline'
-            inline: |
-              cd /var/www/html
-              git pull origin main
+            sourceFolder: 'dir/src'
+            contents: '**'
+            targetFolder: '/var/www/html'
+            cleanTargetFolder: true
             readyTimeout: '20000'
 
