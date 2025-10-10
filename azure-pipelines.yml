@@ -9,8 +9,8 @@ stages:
   - stage: TerraformStage
     displayName: "Terraform Deployment"
     jobs:
-      - job: TerraformInit
-        displayName: "Terraform Init"
+      - job: TerraformJob
+        displayName: "Terraform Init, Plan & Apply"
         steps:
           - task: TerraformInstaller@1
             inputs:
@@ -27,10 +27,6 @@ stages:
               backendAzureRmContainerName: 'backendcont'
               backendAzureRmKey: 'terraform.tfstate'
 
-      - job: TerraformPlanApply
-        displayName: "Plan & Apply"
-        dependsOn: TerraformInit
-        steps:
           - task: TerraformTask@5
             inputs:
               provider: 'azurerm'
@@ -45,10 +41,9 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
               environmentServiceNameAzureRM: 'azurerm-service-connection'
 
-
       - job: SSHConnect
         displayName: 'SSH Connect & Install Nginx'
-        dependsOn: TerraformPlanApply
+        dependsOn: TerraformJob
         steps:
           - task: SSH@0
             inputs:
