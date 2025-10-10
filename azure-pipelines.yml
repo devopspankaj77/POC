@@ -60,9 +60,10 @@ stages:
         displayName: 'Deploy Code'
         dependsOn: SSHConnect
         steps:
-          - task: CopyFilesOverSSH@0
-            inputs:
-              sshEndpoint: 'ssh-service-connection'
-              sourceFolder: '$(System.DefaultWorkingDirectory)/src'
-              contents: 'index.html'
-              readyTimeout: '20000'
+        - task: CopyFilesOverSSH@0
+          inputs:
+            sshEndpoint: 'ssh-service-connection'
+            sourceFolder: '$(System.DefaultWorkingDirectory)/src'
+            contents: 'index.html'
+            targetFolder: '/var/www/html'
+            readyTimeout: '20000'
