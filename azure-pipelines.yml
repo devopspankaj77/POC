@@ -48,4 +48,25 @@ stages:
             environmentServiceNameAzureRM: 'azurerm-service-connection'
         
         
-
+      - job: 
+        displayName: sshconnect
+        steps:
+        - task: SSH@0
+          inputs:
+            sshEndpoint: 'ssh-service-connection'
+            runOptions: 'inline'
+            inline: |
+              sudo apt update
+              sudo apt install nginx
+              sudo systemctl enable nginx
+              sudo systemstl start nginx
+            readyTimeout: '20000'
+      - job: 
+        displayName: deploycode
+        steps:
+        - task: CopyFilesOverSSH@0
+          inputs:
+            sshEndpoint: 'ssh-service-connection'
+            sourceFolder: '$(System.DefaultWorkingDirectory)/src'
+            contents: 'index.html'
+            readyTimeout: '20000'
