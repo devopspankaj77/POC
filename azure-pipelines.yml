@@ -56,10 +56,10 @@ stages:
             sshEndpoint: 'ssh-service-connection'
             runOptions: 'inline'
             inline: |
-              sudo apt update
-              sudo apt install nginx
+              sudo apt update -y
+              sudo apt install nginx -y
               sudo systemctl enable nginx
-              sudo systemstl start nginx
+              sudo systemctl start nginx
             readyTimeout: '20000'
       - job: 
         displayName: deploycode
