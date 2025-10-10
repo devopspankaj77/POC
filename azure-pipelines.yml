@@ -52,7 +52,7 @@ stages:
               inline: |
                 sudo apt-get update -y
                 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nginx
-                sudo systemctl enable nginx
+                
                 sudo systemctl start nginx             
                 
 
