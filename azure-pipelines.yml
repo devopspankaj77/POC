@@ -68,7 +68,7 @@ stages:
         - task: CopyFilesOverSSH@0
           inputs:
             sshEndpoint: 'ssh-service-connection'
-            sourceFolder: 'dir/src'
+            sourceFolder: '$(dir)/src'
             contents: '**'
             targetFolder: '/var/www/html'
             cleanTargetFolder: true
