@@ -7,11 +7,11 @@ trigger:
 
      
 # runs on pull based
-pr:
- branches:
-   include:
-     - main
-     - feature
+# pr:
+#  branches:
+#    include:
+#      - main
+#      - feature
 
 # agent pool name
 pool: poc
@@ -37,4 +37,16 @@ stages:
             backendAzureRmStorageAccountName: 'stgbackend25'
             backendAzureRmContainerName: 'backendcont'
             backendAzureRmKey: 'terraform.tfstate'
-        
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            environmentServiceNameAzureRM: 'azurerm-service-connection'
+
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            environmentServiceNameAzureRM: 'azurerm-service-connection'
