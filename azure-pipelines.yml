@@ -1,76 +1,40 @@
-trigger:
-  branches:
-    include:
-      - main
+trigger: 
+# runs on push based
+ branches:
+   include:
+     - main
+     - feature
 
+     
+# runs on pull based
+pr:
+ branches:
+   include:
+     - main
+     - feature
+
+# agent pool name
 pool: poc
 
 variables:
-  dir: '$(System.DefaultWorkingDirectory)'
- 
- 
+  directory:  
 
 stages:
-  - stage: TerraformStage
-    displayName: "Terraform Deployment"
+  - stage:
+    displayName: 
     jobs:
-      - job: TerraformJob
-        displayName: "Terraform Init, Plan & Apply"
+      - job: 
         steps:
-          - task: TerraformInstaller@1
-            inputs:
-              terraformVersion: 'latest'
-
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-              backendServiceArm: 'azurerm-service-connection'
-              backendAzureRmResourceGroupName: 'rg-backend'
-              backendAzureRmStorageAccountName: 'stgbackend25'
-              backendAzureRmContainerName: 'backendcont'
-              backendAzureRmKey: 'terraform.tfstate'
-
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-              environmentServiceNameAzureRM: 'azurerm-service-connection'
-
-          - task: TerraformTask@5
-            inputs:
-              provider: 'azurerm'
-              command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-              environmentServiceNameAzureRM: 'azurerm-service-connection'
-
-      - job: SSHConnect
-        displayName: 'SSH Connect & Install Nginx'
-        dependsOn: TerraformJob
-        steps:
-          - task: SSH@0
-            inputs:
-              sshEndpoint: 'ssh-service-connection'
-              runOptions: 'inline'
-              inline: |
-                sudo apt-get update -y
-                sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nginx
-                sudo chmod -R 777 /var/www/html
-                sudo systemctl start nginx             
-                
-
-      - job: DeployCode
-        displayName: 'Deploy Code'
-        dependsOn: SSHConnect
-        steps:
-        - task: CopyFilesOverSSH@0
+        - task: TerraformInstaller@1
           inputs:
-            sshEndpoint: 'ssh-service-connection'
-            sourceFolder: '$(dir)/src'
-            contents: '**'
-            targetFolder: '/var/www/html'
-            cleanTargetFolder: true
-            readyTimeout: '20000'
+            terraformVersion: 'latest'
+        
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            backendAzureRmStorageAccountName: 'stgbackend25'
+            backendAzureRmContainerName: 'backendcont'
+            backendAzureRmKey: 'terraform.tfstate'
 
