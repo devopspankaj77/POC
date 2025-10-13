@@ -8,12 +8,12 @@ resource "azurerm_resource_group" "rg" {
 }
 
 # Use the import block to link it to an existing Azure resource
-import {
-  to = azurerm_resource_group.rg
-  id = "/subscriptions/bfa25a35-e77a-47a6-8d20-5557ab211ef7/resourceGroups/poc"
-}
+# import {
+#   to = azurerm_resource_group.rg
+#   id = "/subscriptions/bfa25a35-e77a-47a6-8d20-5557ab211ef7/resourceGroups/poc"
+# }
 # terraform import azurerm_resource_group.rg /subscriptions/bfa25a35-e77a-47a6-8d20-5557ab211ef7/resourceGroups/poc
-
+# terraform import azurerm_resource_group.rg /subscriptions/bfa25a35-e77a-47a6-8d20-5557ab211ef7/resourceGroups/poc
 # 
 resource "azurerm_virtual_network" "vnet" {
   name                = "poc-vnet"
