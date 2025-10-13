@@ -36,7 +36,7 @@ stages:
             backendServiceArm: 'azurerm-service-connection'
             backendAzureRmStorageAccountName: 'stgbackend25'
             backendAzureRmContainerName: 'backendcont'
-            backendAzureRmKey: 'terraform.tfstate'
+            backendAzureRmKey: 'dev-terraform.tfstate'
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
