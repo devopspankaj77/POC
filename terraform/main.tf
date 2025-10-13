@@ -1,10 +1,13 @@
 
 # main.tf
 
-# Define the resource in your Terraform configuration
+
+
+
+# # Define the resource in your Terraform configuration
 resource "azurerm_resource_group" "rg" {
   name     = "poc"
-  location = "Australia East"
+  location = "East US"
 }
 
 # Use the import block to link it to an existing Azure resource
