@@ -40,7 +40,7 @@ stages:
         - task: TerraformTask@5
           inputs:
             provider: 'azurerm'
-            command: 'apply'
+            command: 'plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             environmentServiceNameAzureRM: 'azurerm-service-connection'
         
