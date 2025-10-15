@@ -1,10 +1,13 @@
 
 # main.tf
 
-# Define the resource in your Terraform configuration
+
+
+
+# # Define the resource in your Terraform configuration
 resource "azurerm_resource_group" "rg" {
   name     = "poc"
-  location = "Australia East"
+  location = "East US"
 }
 
 # Use the import block to link it to an existing Azure resource
@@ -57,6 +60,7 @@ resource "azurerm_network_interface" "nic" {
     name                = "pocnsg"
     location            = azurerm_resource_group.rg.location
     resource_group_name = azurerm_resource_group.rg.name
+    depends_on          = [azurerm_virtual_network.vnet] 
   }
 
   resource "azurerm_network_security_rule" "ssh" {
